@@ -26,8 +26,6 @@ if(isset($_POST['login']))
 		$query2-> execute();
 		$result=$query2->fetch(PDO::FETCH_OBJ);
 		
-		
-
 		if($result->level == "1"){
 			$_SESSION['alogin']=$_POST['email'];
 
