@@ -86,7 +86,7 @@ if(isset($_POST['login']))
 
 <body>
     <!-- Begin page -->
-    <div class="accountbg"></div>
+    <div></div>
     <div class="wrapper-page">
         <div class="display-table">
             <div class="display-table-cell">
@@ -99,23 +99,23 @@ if(isset($_POST['login']))
                             <div class="card">
                                 <div class="card-body">
                                     <div class="text-center pt-3">
-                                        <a href="index.html">
-                                            <img src="assets/images/logo-dark.png" alt="logo" height="22" />
+                                        <a href="index.php">
+                                            <img src="assets/images/yeriko1.png" alt="logo" height="60" />
                                         </a>
                                     </div>
                                     <div class="px-3 pb-3">
-                                        <form class="form-horizontal m-t-20 mb-0" action="index.html">
+                                        <form class="form-horizontal m-t-20 mb-0" method="POST" action="index.php">
                                             <div class="form-group row">
                                                 <div class="col-12">
                                                     <input class="form-control" type="text" required=""
-                                                        placeholder="Username" />
+                                                        placeholder="Username" name="email" />
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <div class="col-12">
                                                     <input class="form-control" type="password" required=""
-                                                        placeholder="Password" />
+                                                        placeholder="Password" name="password" />
                                                 </div>
                                             </div>
 
@@ -132,7 +132,7 @@ if(isset($_POST['login']))
 
                                             <div class="form-group text-right row m-t-20">
                                                 <div class="col-12">
-                                                    <button
+                                                    <button name="login"
                                                         class="btn btn-primary btn-raised btn-block waves-effect waves-light"
                                                         type="submit">
                                                         Log In
