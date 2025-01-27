@@ -268,14 +268,15 @@ if(strlen($_SESSION['alogin'])==0)
                         $run = mysqli_query($con,$select);
                         $people = 0;
                         while($row=mysqli_fetch_array($run)){
-                        	$phone = $row['namba_ya_simu'];
-                        	$newPhone = substr($phone, 1);
-                        	$form = "$newPhone";
-                        	$api_key='3c0**********28142c';
-                            $secret_key = 'N2UxYmEyYzUw****************************RmYTBjNDZiNjEzNTcxMTBmMGEwYTdmZg==';
+                        	$phone = $row['nambayasimu'];
+                        	$form = "$phone";
+                            $api_key='fe************************3';
+                            $secret_key = 'YTNlNjM0N***********************************************************M5MzcyZA==';
                             
+                            echo "<script>alert('Jumbe imetumwa kikamirifu kikamirifu !! $form')</script>";
+
                             $postData = array(
-                                'source_addr' => 'INFO',
+                                'source_addr' => 'NITUSUE APP',
                                 'encoding'=>0,
                                 'schedule_time' => '',
                                 'message' => "$message\n$messageId\nYeriko System",
@@ -306,6 +307,9 @@ if(strlen($_SESSION['alogin'])==0)
                                 die(curl_error($ch));
                             }
                         	$people = $people + 1;
+                            echo "<script>alert('Jumbe imetumwa kikamirifu kikamirifu !! $response')</script>";
+
+                            var_dump($response);
                         }
                         
                         if($run)
