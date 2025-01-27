@@ -271,8 +271,8 @@ if(strlen($_SESSION['alogin'])==0)
                         	$phone = $row['namba_ya_simu'];
                         	$newPhone = substr($phone, 1);
                         	$form = "$newPhone";
-                        	$api_key='3c097df3f528142c';
-                            $secret_key = 'N2UxYmEyYzUwZmIzYWZhYTY1YzdlZGRhNWFhZDZkZjg4MjJiMWY2ZDRmYTBjNDZiNjEzNTcxMTBmMGEwYTdmZg==';
+                        	$api_key='3c0**********28142c';
+                            $secret_key = 'N2UxYmEyYzUw****************************RmYTBjNDZiNjEzNTcxMTBmMGEwYTdmZg==';
                             
                             $postData = array(
                                 'source_addr' => 'INFO',
