@@ -1,3 +1,13 @@
+<?php include '../includes/config.php'; ?>
+<?php
+session_start();
+error_reporting(0);
+include('../includes/config.php');
+if(strlen($_SESSION['alogin'])==0)
+{   
+    header('location:../index.php');
+} 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,9 +19,7 @@
     <meta content="Admin Dashboard" name="description" />
     <meta content="Mannatthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
     <link rel="shortcut icon" href="../assets/images/favicon.ico" />
-
     <link href="../assets/plugins/animate/animate.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/bootstrap-material-design.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/icons.css" rel="stylesheet" type="text/css" />
@@ -78,7 +86,6 @@
                             <a href="javascript:void(0);" class="waves-effect">
                                 <i class="mdi mdi-cards"></i>
                                 <span> Matangazo </span>
-                                <span class="badge badge-pill badge-info float-right">8</span>
                             </a>
                             <ul class="list-unstyled">
                                 <li>
@@ -184,16 +191,18 @@
                                             kutuma</h4>
 
                                         <div class="general-label">
-                                            <form class="mb-0">
+                                            <form class="mb-0" method="POST" action="matangazo.php"
+                                                enctype="multipart/form-data">
                                                 <div class="form-group">
                                                     <label for="exampleTextarea" class="bmd-label-floating">Ujumbe wa
                                                         kutuma
                                                     </label>
-                                                    <textarea class="form-control" id="exampleTextarea"
-                                                        rows="3"></textarea>
+                                                    <textarea class="form-control" name="message" id="message"
+                                                        rows="10"></textarea>
                                                 </div>
 
-                                                <button type="submit" class="btn btn-primary btn-raised mb-0">
+                                                <button type="submit" name="ongeza"
+                                                    class="btn btn-primary btn-raised mb-0">
                                                     Tuma
                                                 </button>
                                             </form>
@@ -236,3 +245,84 @@
 </body>
 
 </html>
+<?php
+                if(isset($_POST['ongeza'])){
+
+                    $message = $_POST['message'];
+                    $messageId = "YERIKO-". rand(40403,19000);
+
+                    $post_date = date('Y-m-d');
+
+
+
+                    if($message == "" || $messageId == "")
+                    {
+                        echo "<script>alert('Please Make Sure Your Provide All Details')</script>";
+                        echo "<script>window.open('matangazo.php','_self')</script>";
+                        exit();
+                    }else{
+                        $insert = "insert into `jumbe`(`messageid`, `message`, `people`, `dates`) VALUES('$messageId','$message','0','$post_date')";
+                        $run = mysqli_query($con,$insert);
+                        
+                        $select = "select * from wanajumuiya";
+                        $run = mysqli_query($con,$select);
+                        $people = 0;
+                        while($row=mysqli_fetch_array($run)){
+                        	$phone = $row['namba_ya_simu'];
+                        	$newPhone = substr($phone, 1);
+                        	$form = "$newPhone";
+                        	$api_key='3c097df3f528142c';
+                            $secret_key = 'N2UxYmEyYzUwZmIzYWZhYTY1YzdlZGRhNWFhZDZkZjg4MjJiMWY2ZDRmYTBjNDZiNjEzNTcxMTBmMGEwYTdmZg==';
+                            
+                            $postData = array(
+                                'source_addr' => 'INFO',
+                                'encoding'=>0,
+                                'schedule_time' => '',
+                                'message' => "$message\n$messageId\nYeriko System",
+                                'recipients' => [array('recipient_id' => '1','dest_addr'=>"$form")]
+                            );
+                            
+                            $Url ='https://apisms.beem.africa/v1/send';
+                            
+                            $ch = curl_init($Url);
+                            error_reporting(E_ALL);
+                            ini_set('display_errors', 1);
+                            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+                            curl_setopt_array($ch, array(
+                                CURLOPT_POST => TRUE,
+                                CURLOPT_RETURNTRANSFER => TRUE,
+                                CURLOPT_HTTPHEADER => array(
+                                    'Authorization:Basic ' . base64_encode("$api_key:$secret_key"),
+                                    'Content-Type: application/json'
+                                ),
+                                CURLOPT_POSTFIELDS => json_encode($postData)
+                            ));
+                            
+                            $response = curl_exec($ch);
+                            
+                            if($response === FALSE){
+                                echo $response;
+                                die(curl_error($ch));
+                            }
+                        	$people = $people + 1;
+                        }
+                        
+                        if($run)
+                        {
+                            $insert = "UPDATE `jumbe` SET `people`='$people' WHERE `messageid` = '$messageId' ";
+		                    $run = mysqli_query($con,$insert);
+                            echo "<script>alert('Jumbe imetumwa kikamirifu kikamirifu !!')</script>";
+                            echo "<script>window.open('matangazo.php','_self')</script>";
+                        }
+                        else
+                        {
+                            echo "<script>alert('Something went wrong !!')</script>";
+                            echo "<script>window.open('matangazo.php','_self')</script>";
+                        }
+                    }
+
+                }
+
+                
+?>

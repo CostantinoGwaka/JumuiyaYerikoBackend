@@ -88,7 +88,6 @@
                             <a href="javascript:void(0);" class="waves-effect">
                                 <i class="mdi mdi-cards"></i>
                                 <span> Matangazo </span>
-                                <span class="badge badge-pill badge-info float-right">8</span>
                             </a>
                             <ul class="list-unstyled">
                                 <li>
